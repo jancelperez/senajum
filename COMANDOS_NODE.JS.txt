@@ -1,0 +1,94 @@
+npnmp -v = ver la version
+node -v= ver la version 
+
+*npm init = crea un  paquete json son archivos manifiestos lo que hacen es definir nuestro proyecto 
+que nombre tiene que escript 
+
+*despues en el manifiensto en el main le decimos el nombre del servidor.js
+
+*despues creamos el archivo js con el nombre dicho en el main el cual sera nuestro servidor
+
+*npm install --save express = va instalar la libreria express es como un micro framweok para servidores web
+el cual nos crea el directorio node_modules con todas sus dependencia
+
+*npm i -g --save pug instalar motor de vistas donde va ir el codigo html pero sin < >
+
+*debemos crear una carpeta views y un archivo index.pug el cual contendra el html pero en codigo pug 
+
+*npm i --save materialize-css es como hacer un link a la paginga de materialize que no va a permitir ordenar nuestro codigo css
+esto queda guardando en el package.json en dependencies 
+nos permite requerir el archivo sass  
+
+*creamos el archivo index.scss en la raiz del proyecto  este archivo le vamos a importar 
+@import "node_modules/materialize-css/sass/materialize.scss"; para poder obtener todos lo archivos de 
+esa ruta que son los archivos de materialize
+ 
+*npm i -g --save gulp gulp-sass= instalar libreria gulp
+
+*crear un archivo gulp llamado Gulpfile.js en la raiz del proyecto 
+este archivo  require gulp y sass
+busca el archivo index.scss
+gulp funciona con pipe ejem pipe busque el archivo sass
+pipe guarde el el archivo en tal carpeta 
+
+*npm i -g --save gulp instalar de forma global gulp
+
+*npm i -g --save gulp-rename para poder renombrar los archivos
+
+*Creamos la carpeta assets donde vamos a guardar las imagenes y fuentes que vamos a utilizar en el proyecto 
+
+*ejecutamos el comando gulp va a buscar el archivo Gulpfile y va a ejecutar la tarea dicho en Gulpfile.js
+esto crea el la carpeta public y ahi crea estan tanto nuestro stilos css como los estilos de materialize y las imagenes que tenemos en la carpeta assets
+
+*para generar mi favicono que es el icono de la pestaña debemos ir a la pagina http://www.favicon-generator.org/ hay selecionamos el archivo el icono que vamos a colocar 
+le decimos create favicon nos genera un archivo html vamos a la pagina de jade http://html2jade.org/ para convertir nuestro codigo html en pug
+y pegamos ese codigo en el archivo index.pug
+
+*ejecutamos el comando gulp va a buscar el archivo Gulpfile y va a ejecutar la tarea dicho en Gulpfile.js
+esto crea el la carpeta public y ahi crea estan tanto nuestro stilos css como los estilos de materialize y las imagenes que tenemos en la carpeta assets
+
+*node nombredelservidor.js = ejecuta el nombredelservidor.js para ver hacemos localhost:puerto despues de ejecutar
+
+BROWSERIFY paquesh bundler o esamblador de paquetes va unir el codigo de nuestras dependencias con el codigo que nosotros desarrollemos
+BABEL emmascript que son los estandares para definir las variables,funciones, clases, herencia en javascript ha cambiado en el año 2015 por lo cual
+las nuevas funcionalidades de javascript no son soportadas por todos los navegadores y balel complementa para que pueda soportar las nuevas funcionalidades 
+
+*npm i --save-dev browserify babelify estas librerias van estar dentro de nuestra carpeta node_modules
+	nosotros lo vamos a utilizar en Gulpfile para que cuando corramos el comando gulp se genere en la carpeta public el archivo app.js
+
+*creamos una carpeta src en la raiz de nuestro proyecto esta carpeta va a contener todo el codigo de nuestro proyecto
+
+*npm i --save-dev vinyl-source-stream esto es para que gulp intrepetre browserify
+
+*ejecutamos el comando gulp va a buscar el archivo Gulpfile y va a ejecutar la tarea dicho en Gulpfile.js
+esto crea el la carpeta public y ahi crea estan tanto nuestro stilos css como los estilos de materialize y las imagenes que tenemos en la carpeta assets y el
+script que tenemos en src index.js
+
+*npm i --save page esta libreria es para que podamos aceder a otras paginas sin que se recargue la  pagina
+
+*npm i --save-dev watchify esta dependencia o libreria lo que nos ayuda es cuando tenemos que repetir varios comandos
+lo haga de forma automatica por ejemplo cuando estamos haciendo un cambio en tenemos que parar el servidor
+con el con control v, ejecutar gulp y volver a levantar el servido node server.js. esto se vuelve engorroso 
+con watchify podemos hacer esta tarea de forma automatica 
+
+*npm i --save yo-yo sigue la filosofia de read nos facilita escribir templates 
+
+*npm i --save empty-element para vaciar contenido de algun elemento
+
+*npm i --save superagent para poder hacer un request, funciona igual que ajax o jquery
+
+*npm install axios --save nos permite hacer lo mismo que superagent pero basandonos en promise
+*npm i --save title for can colocar a title in the pestaña de browser
+
+*npm install intl-relativeformat --save for para formatear fechas con formato relativo ejemplo hace 3 horas
+
+*npm i --save intl-messageformat: para cambiar el idioma de español a ingles en los textos
+
+*npm i --save-dev babel-plugin-syntax-async-functions babel-plugin-transform-regenerator babel-preset-es2015 con esto instalamos unos plugin para que podamos utilizar la async debemos configurar el gulpfiel para
+ingresar los plugins
+
+*npm install --save multer nos permite cargar archivos en el servidor 
+
+*npm i --save file-extension para obtener la extencion de los archivos que vamos a subir 
+
+*npm i --save webcamjs lo utilizamos para poder utilizar la camara web
