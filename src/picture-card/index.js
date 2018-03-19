@@ -1,5 +1,5 @@
 var yo = require('yo-yo');
-var moment = require('moment');
+//var moment = require('moment');
 var translate = require('../translate');
 
 

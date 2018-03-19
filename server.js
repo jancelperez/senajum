@@ -5,6 +5,28 @@ var multer  = require('multer');
 
 var ext = require('file-extension');
 
+//es la encargada de alamacenar la mi autenticacion en una cookie
+var cookieParser = require('cookie-parser');
+
+//es la dependencia encargada de hacer el parse de la peticion http que me van hacer a la ruta de autenticacion
+var bodyParser = require('body-parser');
+
+//permitir guardaar datos del servidor de una session para luego ser referenciados con una cookie
+var expressSession = require('express-session')
+
+var passport = require('passport')
+
+var senagram = require('senagram-client');
+
+var auth = require('./auth');
+
+var config = require('./config');
+
+var port = process.env.PORT || 3000;
+
+//instanciamos el cliente del modulo senamgram-cliente
+var client = senagram.crearCliente(config.client);
+
 //storage son distintas formas de almacenar la informacion en este caso es diskStorage
 var storage = multer.diskStorage({
 
@@ -24,12 +46,37 @@ var upload = multer({ storage: storage }).single('picture');
 
 var app = express();
 
-//motor de plantilla que se utiliza en este caso pug 
-app.set('view engine','pug');
+//express sea capaz de hacer parse de peticiones http que contengan un json
+app.set(bodyParser.json());
 
+//poder recibir los parametros del request que vienen desde un formulario 
+//la propiedad por defecto extended va a hacer false por que no va hacer extendido
+app.use(bodyParser.urlencoded({ extended: false}));
+
+app.use(cookieParser());
+
+app.use(expressSession({
+    secret: config.secret,
+    //no vuelva y gurde la secion 
+    resave: false,
+    //no almaccene secion   es que no han sido inicializadas
+    saveUnitialized: false
+}));
+
+app.use(passport.initialize());
+app.use(passport.session());
 //la carpeta public va a estar accesible para servir archivos estaticos
 //cuando en el archivo Gulpfile le indicamos que lo que hacemos lo envie a public este nos ayuda para automatizar
 app.use(express.static('public'));
+
+//motor de plantilla que se utiliza en este caso pug 
+app.set('view engine','pug');
+
+// desarializar usuarios es que tenemos un objeto con todos los datos pero el login solo necesitamos ciertos datos
+// por tal motivo vamos a obtener solo los datos que necesitamos
+passport.use(auth.localStrategy);
+passport.deserializeUser(auth.deserializeUser);
+passport.serializeUser(auth.serializeUser);
 
 //acceder a la ruta si / es la principal o home 
 app.get('/',function(req, res){
@@ -45,15 +92,43 @@ app.get('/signup',function(req, res){
     res.render('index', {title:'Senagram - Signup'});
 })
 
+app.post('/signup', function (req, res) {
+    // obtenemos el usuario que nos llega del formulario
+    // este lo obtenemos por el mildware que utilizamos de body-parse
+    var user = req.body;
+    client.guardarUsuario(user, function (err, usr) {
+        if (err) return res.status(500).send(err.message);
+
+        res.redirect('/signin');
+    })
+})
+  
 //acceder a la ruta signup
 app.get('/signin',function(req, res){
-    //llamar al motor de vista de pug primer parametro
-    //nos devulve el index.pug
+  //llamar al motor de vista de pug primer parametro
+  //nos devulve el index.pug
     res.render('index', {title:'Senagram - Signin'});
 })
 
+// /login es la ruta que me va a recibir los parametros de autenticacion
+// passport tiene un metodo llamando 
+app.post('/login', passport.authenticate('local', {
+    // si fue exitoso el logeo boy ala ruta principal 
+    successRedirect: '/',
+    // si fallo boy al signin
+    failureRedirect: '/signin'
+}))
+
+function garantizarAutenticacion (req, res, next) {
+    // passport js tiene una funcion que si el usario fue autenticado correctamente devuelve true este es inyectado al request del milware
+    if (req.isAuthenticated()) {
+        return next();
+    }
+    // si trato de entrar por una ruta que no estoy autenticado me va a devolver el error no estoy autenticado
+    res.status(401).send({error :'no esta autenticado'})
+}
 //simulamos que estan imagenes son las que estan cargadas en la base de datos
-app.get('/api/pictures' , function(req, res){
+app.get('/api/pictures' , garantizarAutenticacion, function(req, res){
     //picures es un array de objetos los array los definimos con [] y dentro de los
     //llaves van los objetos los objetos los definimos {nombre} y dentro de los objetos podemos definir otos objetos
     //ejmplo array de objetos pictures[{},{},{}]; 

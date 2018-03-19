@@ -92,3 +92,15 @@ ingresar los plugins
 *npm i --save file-extension para obtener la extencion de los archivos que vamos a subir 
 
 *npm i --save webcamjs lo utilizamos para poder utilizar la camara web
+
+*npm i --save body-parser: es la dependencia encargada de hacer el parse de la peticion http que me van hacer a la ruta de autenticacion
+
+*npm i --save cookie-parser: es la encargada de alamacenar la mi autenticacion en una cookie
+
+*npm i --save express-session: permitir guardaar datos del servidor de una session para luego ser referenciados con una cookie
+
+*npm install passport --save: passport es framework con el cual vamos a trabajar para la autenticacion de usuario
+
+*npm install passport-local: debe estar instalado passport esta es para la autenticacion normal clave y contraseña
+
+*npm install passport-facebook --save: debe estar instalado passport esta es para la autenticacion por medio de facebook

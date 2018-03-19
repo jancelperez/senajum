@@ -9,7 +9,7 @@ var signinForm = yo`
 		    <div class="row">
 		        <div class="signup-box">
 					<h1 class="platzigram">Senagram</h1>
-					<form class="signup-form">
+					<form class="signup-form" action="/login" method="POST">
 						
 						<div class="section">
 							<a class="btn btn-fb hide-on-small-only">${translate.message('signup.facebook')}</a>
